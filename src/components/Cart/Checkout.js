@@ -3,46 +3,46 @@ import { useRef, useState } from 'react';
 import classes from './Checkout.module.css';
 
 const isEmpty = (value) => value.trim() === '';
-const isFiveChars = (value) => value.trim().length === 5;
+const isTenChars = (value) => value.trim().length === 10;
 
 const Checkout = (props) => {
   const [formInputsValidity, setFormInputsValidity] = useState({
     name: true,
-    street: true,
-    city: true,
-    postalCode: true,
+    address: true,
+    note: true,
+    phonenumber: true,
   });
 
   const nameInputRef = useRef();
-  const streetInputRef = useRef();
-  const postalCodeInputRef = useRef();
-  const cityInputRef = useRef();
+  const addressInputRef = useRef();
+  const phonenumberInputRef = useRef();
+  const noteInputRef = useRef();
 
   const confirmHandler = (event) => {
     event.preventDefault();
 
     const enteredName = nameInputRef.current.value;
-    const enteredStreet = streetInputRef.current.value;
-    const enteredPostalCode = postalCodeInputRef.current.value;
-    const enteredCity = cityInputRef.current.value;
+    const enteredAddress = addressInputRef.current.value;
+    const enteredPhonenumber = phonenumberInputRef.current.value;
+    const enteredNote = noteInputRef.current.value;
 
     const enteredNameIsValid = !isEmpty(enteredName);
-    const enteredStreetIsValid = !isEmpty(enteredStreet);
-    const enteredCityIsValid = !isEmpty(enteredCity);
-    const enteredPostalCodeIsValid = isFiveChars(enteredPostalCode);
+    const enteredAddressIsValid = !isEmpty(enteredAddress);
+    const enteredNoteIsValid = !isEmpty(enteredNote);
+    const enteredPhonenumberIsValid = isTenChars(enteredPhonenumber);
 
     setFormInputsValidity({
       name: enteredNameIsValid,
-      street: enteredStreetIsValid,
-      city: enteredCityIsValid,
-      postalCode: enteredPostalCodeIsValid,
+      address: enteredAddressIsValid,
+      note: enteredNoteIsValid,
+      phonenumber: enteredPhonenumberIsValid,
     });
 
     const formIsValid =
       enteredNameIsValid &&
-      enteredStreetIsValid &&
-      enteredCityIsValid &&
-      enteredPostalCodeIsValid;
+      enteredAddressIsValid &&
+      enteredNoteIsValid &&
+      enteredPhonenumberIsValid;
 
     if (!formIsValid) {
       return;
@@ -50,54 +50,54 @@ const Checkout = (props) => {
 
     props.onConfirm({
       name: enteredName,
-      street: enteredStreet,
-      city: enteredCity,
-      postalCode: enteredPostalCode,
+      address: enteredAddress,
+      note: enteredNote,
+      phonenumber: enteredPhonenumber,
     });
   };
 
   const nameControlClasses = `${classes.control} ${
     formInputsValidity.name ? '' : classes.invalid
   }`;
-  const streetControlClasses = `${classes.control} ${
-    formInputsValidity.street ? '' : classes.invalid
+  const addressControlClasses = `${classes.control} ${
+    formInputsValidity.address ? '' : classes.invalid
   }`;
-  const postalCodeControlClasses = `${classes.control} ${
-    formInputsValidity.postalCode ? '' : classes.invalid
+  const phonenumberControlClasses = `${classes.control} ${
+    formInputsValidity.phonenumber ? '' : classes.invalid
   }`;
-  const cityControlClasses = `${classes.control} ${
-    formInputsValidity.city ? '' : classes.invalid
+  const noteControlClasses = `${classes.control} ${
+    formInputsValidity.note ? '' : classes.invalid
   }`;
 
   return (
     <form className={classes.form} onSubmit={confirmHandler}>
       <div className={nameControlClasses}>
-        <label htmlFor='name'>Your Name</label>
+        <label htmlFor='name'>Tên của bạn</label>
         <input type='text' id='name' ref={nameInputRef} />
-        {!formInputsValidity.name && <p>Please enter a valid name!</p>}
+        {!formInputsValidity.name && <p>Vui lòng điền tên!</p>}
       </div>
-      <div className={streetControlClasses}>
-        <label htmlFor='street'>Street</label>
-        <input type='text' id='street' ref={streetInputRef} />
-        {!formInputsValidity.street && <p>Please enter a valid street!</p>}
+      <div className={addressControlClasses}>
+        <label htmlFor='street'>Địa chỉ</label>
+        <input type='text' id='street' ref={addressInputRef} />
+        {!formInputsValidity.address && <p>Vui lòng điền địa chỉ!</p>}
       </div>
-      <div className={postalCodeControlClasses}>
-        <label htmlFor='postal'>Postal Code</label>
-        <input type='text' id='postal' ref={postalCodeInputRef} />
-        {!formInputsValidity.postalCode && (
-          <p>Please enter a valid postal code (5 characters long)!</p>
+      <div className={phonenumberControlClasses}>
+        <label htmlFor='postal'>Số điện thoại</label>
+        <input type='text' id='postal' ref={phonenumberInputRef} />
+        {!formInputsValidity.phonenumber && (
+          <p>Vui lòng điền số điện thoại (10 số)!</p>
         )}
       </div>
-      <div className={cityControlClasses}>
-        <label htmlFor='city'>City</label>
-        <input type='text' id='city' ref={cityInputRef} />
-        {!formInputsValidity.city && <p>Please enter a valid city!</p>}
+      <div className={noteControlClasses}>
+        <label htmlFor='city'>Lưu ý</label>
+        <input type='text' id='city' ref={noteInputRef} />
+        {/* {!formInputsValidity.note && <p>Please enter a valid city!</p>} */}
       </div>
       <div className={classes.actions}>
         <button type='button' onClick={props.onCancel}>
-          Cancel
+          Hủy bỏ
         </button>
-        <button className={classes.submit}>Confirm</button>
+        <button className={classes.submit}>Xác nhận</button>
       </div>
     </form>
   );
